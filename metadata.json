@@ -1,0 +1,5 @@
+{
+  "name": "FMCG TenderFlow AI",
+  "description": "An enterprise-grade FMCG tender management and automation prototype using Gemini AI for fit analysis and response drafting.",
+  "requestFramePermissions": []
+}
