@@ -43,12 +43,21 @@ const TenderDetail: React.FC<TenderDetailProps> = ({ tender, onBack, onProceed }
   }, [tender]);
 
   const checkInventory = () => {
-    const item = MOCK_INVENTORY_DATA.find(i => tender.category.toLowerCase().includes(i.name.toLowerCase()) || tender.title.toLowerCase().includes(i.name.toLowerCase()));
+    // Improved matching logic for demo purposes
+    const item = MOCK_INVENTORY_DATA.find(i => {
+      const catMatch = tender.category.toLowerCase().includes(i.name.toLowerCase().split(' ')[0]);
+      const titleMatch = tender.title.toLowerCase().includes(i.name.toLowerCase().split(' ')[0]);
+      return catMatch || titleMatch;
+    });
+    
     if (!item) return { status: 'Unknown', color: 'text-slate-400', bg: 'bg-slate-50', message: 'Category not tracked' };
-    const reqValue = parseInt(tender.estimatedQuantity);
+    
+    const reqValue = parseInt(tender.estimatedQuantity.replace(/,/g, ''));
+    if (isNaN(reqValue)) return { status: 'Manual Check', color: 'text-amber-700', bg: 'bg-amber-50', message: 'Parsing error in quantity' };
+
     if (item.availableQty >= reqValue * 1.5) return { status: 'Stock Available', color: 'text-emerald-700', bg: 'bg-emerald-50', message: `Available: ${item.availableQty} ${item.unit}` };
-    if (item.availableQty >= reqValue) return { status: 'Partial Stock', color: 'text-amber-700', bg: 'bg-amber-50', message: 'Lead time: 5-7 days' };
-    return { status: 'Insufficient Stock', color: 'text-red-700', bg: 'bg-red-50', message: 'Stock-up approval required' };
+    if (item.availableQty >= reqValue) return { status: 'Partial Stock', color: 'text-amber-700', bg: 'bg-amber-50', message: `Lead time: 5-7 days (${item.availableQty} units ready)` };
+    return { status: 'Insufficient Stock', color: 'text-red-700', bg: 'bg-red-50', message: `Required: ${reqValue}, Available: ${item.availableQty}` };
   };
 
   const inv = checkInventory();
@@ -133,7 +142,7 @@ const TenderDetail: React.FC<TenderDetailProps> = ({ tender, onBack, onProceed }
           )}
         </section>
 
-        {/* EXPLAINABILITY BREAKDOWN (Collapsible Section below Suitability Engine) */}
+        {/* EXPLAINABILITY BREAKDOWN (Collapsible Section) */}
         {!loading && analysis && (
           <section className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
             <button 
@@ -230,7 +239,6 @@ const TenderDetail: React.FC<TenderDetailProps> = ({ tender, onBack, onProceed }
         </section>
       </main>
 
-      {/* FOOTER ACTION */}
       <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-slate-200 p-6 flex gap-4 shadow-2xl z-50 rounded-t-[2.5rem]">
         <button 
           onClick={onBack}

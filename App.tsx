@@ -32,6 +32,49 @@ const App: React.FC = () => {
       status: 'Lost', 
       rejectionReason: 'Missing ISO 9001 certification proof', 
       lessonsLearned: 'Always append Vol 4 with updated compliance certs.' 
+    },
+    {
+      tenderId: 'T-HIST-003',
+      title: 'Defense Pulses Supply (Phase 2)',
+      date: '2023-11-20',
+      score: 92,
+      status: 'Won',
+      lessonsLearned: 'Direct farm-to-depot logistics plan reduced delivery risk score.'
+    },
+    {
+      tenderId: 'T-HIST-004',
+      title: 'Municipal Tea Supply Contract',
+      date: '2024-01-15',
+      score: 61,
+      status: 'Lost',
+      rejectionReason: 'Sample packaging did not meet "Bio-degradable" clause',
+      lessonsLearned: 'Verify eco-compliance for beverages sector for Municipal authorities.'
+    }
+  ]);
+
+  const [alerts, setAlerts] = useState<AppAlert[]>([
+    {
+      id: 'A1',
+      type: 'deadline',
+      title: 'Tender Closing Soon',
+      message: 'IRCTC UHT Milk tender expires in 12 days. Draft response is 0% complete.',
+      tenderId: 'T-8829102',
+      timestamp: new Date()
+    },
+    {
+      id: 'A2',
+      type: 'stock',
+      title: 'Inventory Shortfall',
+      message: 'Sunflower Oil stock is at 25% of required quantity for Dept of Food bid.',
+      tenderId: 'T-112233',
+      timestamp: new Date()
+    },
+    {
+      id: 'A3',
+      type: 'system',
+      title: 'AI Intelligence Update',
+      message: 'New outcome data synced from CPC. Fit scores for Spices sector updated.',
+      timestamp: new Date()
     }
   ]);
 
@@ -99,13 +142,32 @@ const App: React.FC = () => {
     setSubmissionHistory(prev => prev.map(h => 
       h.tenderId === id ? { ...h, status, rejectionReason: reason, lessonsLearned: lesson } : h
     ));
-    alert("Authority Intelligence Model retrained with latest outcome feedback.");
+    // Trigger an alert for the learning loop
+    const newAlert: AppAlert = {
+      id: `AL-${Date.now()}`,
+      type: 'system',
+      title: 'Learning Log Updated',
+      message: `AI Model updated with lessons from ${id}. Future drafts will self-correct.`,
+      timestamp: new Date()
+    };
+    setAlerts(prev => [newAlert, ...prev]);
+  };
+
+  const handleNotificationAction = (tenderId: string, action: 'budget' | 'remind' | 'notInterested') => {
+    if (action === 'notInterested') {
+      setAlerts(prev => prev.filter(a => a.tenderId !== tenderId));
+    } else {
+      alert(`Action "${action}" recorded for tender ${tenderId}.`);
+    }
   };
 
   const handleFinalizeReport = (reportText: string) => {
     if (!selectedTender) return;
     const qtyValue = parseInt(selectedTender.estimatedQuantity) || 0;
-    const matchingItem = inventory.find(i => selectedTender.category.toLowerCase().includes(i.name.toLowerCase()) || i.name.toLowerCase().includes(selectedTender.category.toLowerCase()));
+    const matchingItem = inventory.find(i => 
+      selectedTender.category.toLowerCase().includes(i.name.toLowerCase().split(' ')[0]) || 
+      i.name.toLowerCase().includes(selectedTender.category.toLowerCase().split(' ')[0])
+    );
     
     if (matchingItem) {
       const newTransaction: InventoryTransaction = {
@@ -152,7 +214,7 @@ const App: React.FC = () => {
       case 'settings':
         return <Settings template={customTemplate} setTemplate={setCustomTemplate} logo={logoUrl} setLogo={setLogoUrl} profile={managerProfile} setProfile={setManagerProfile} company={companyProfile} setCompany={setCompanyProfile} />;
       case 'notifications':
-        return <Notifications alerts={[]} onAction={() => {}} />;
+        return <Notifications alerts={alerts} onAction={handleNotificationAction} />;
       default:
         return <Dashboard onSelectTender={handleTenderSelect} managerProfile={managerProfile} />;
     }
@@ -160,7 +222,6 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 flex justify-center selection:bg-indigo-100">
-      {/* Responsive Container: Fixed max width on desktop, fluid on mobile */}
       <div className="w-full md:max-w-3xl lg:max-w-4xl bg-white min-h-screen shadow-2xl relative overflow-x-hidden border-x border-slate-200">
         <div className="fixed top-4 right-4 z-[60]">
           <div className="bg-white/90 backdrop-blur-md border border-slate-200 px-4 py-2 rounded-full flex items-center gap-3 shadow-lg">
