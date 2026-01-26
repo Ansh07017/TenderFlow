@@ -23,10 +23,6 @@ const Settings: React.FC<SettingsProps> = ({ template, setTemplate, logo, setLog
     setTimeout(() => setSaveStatus(false), 2000);
   };
 
-  const simulateUpload = () => {
-    setLogo("https://api.dicebear.com/7.x/initials/svg?seed=AgroPrime&backgroundColor=4f46e5");
-  };
-
   const handleDownloadAPK = () => {
     setIsDownloading(true);
     setTimeout(() => {
@@ -42,11 +38,10 @@ const Settings: React.FC<SettingsProps> = ({ template, setTemplate, logo, setLog
         <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em] mt-2">Enterprise Configuration & Distribution</p>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* LEFT COLUMN */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        {/* LEFT COLUMN: BUSINESS PROFILE */}
         <div className="space-y-8">
-          {/* COMPANY DETAILS SECTION */}
-          <section className="bg-white rounded-[2.5rem] border border-slate-200 overflow-hidden shadow-sm">
+          <section className="bg-white rounded-[2.5rem] border border-slate-200 overflow-hidden shadow-sm h-full">
             <div className="bg-[#337ab7] px-6 py-5">
                <h3 className="text-white font-black text-center text-xs uppercase tracking-widest leading-relaxed">
                  Business Profile Optimization
@@ -109,56 +104,10 @@ const Settings: React.FC<SettingsProps> = ({ template, setTemplate, logo, setLog
               </div>
             </div>
           </section>
-
-          {/* DISTRIBUTION SECTION (NEW FEATURE) */}
-          <section className="bg-slate-900 rounded-[3rem] p-8 text-white shadow-2xl relative overflow-hidden ring-8 ring-slate-100">
-            <div className="absolute top-0 right-0 p-8 opacity-5 rotate-12"><Smartphone size={160} /></div>
-            <div className="relative z-10">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-indigo-500 rounded-xl text-white">
-                  <MonitorSmartphone size={20} />
-                </div>
-                <div>
-                  <h3 className="text-xs font-black uppercase tracking-widest">Enterprise Distribution</h3>
-                  <p className="text-[9px] text-indigo-300 font-bold uppercase tracking-tighter">Mobile & Desktop Access</p>
-                </div>
-              </div>
-
-              <div className="space-y-4 mb-8">
-                <div className="flex items-start gap-3">
-                  <ShieldCheck size={18} className="text-emerald-400 shrink-0 mt-1" />
-                  <p className="text-[11px] leading-relaxed text-slate-300 font-medium italic">
-                    "TenderFlow is cross-platform. Install the mobile APK for on-field response generation or use the PWA for desktop sourcing."
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <button 
-                  onClick={handleDownloadAPK}
-                  disabled={isDownloading}
-                  className="flex items-center justify-center gap-3 py-4 bg-white text-slate-900 rounded-2xl font-black text-[10px] uppercase tracking-widest active:scale-95 transition-all shadow-xl hover:bg-slate-50 disabled:opacity-50"
-                >
-                  {isDownloading ? (
-                    <div className="w-4 h-4 border-2 border-slate-900/10 border-t-slate-900 rounded-full animate-spin"></div>
-                  ) : <Download size={16} />}
-                  Download APK
-                </button>
-                <button 
-                  onClick={() => alert("PWA: Add to Home Screen enabled. Check browser menu for 'Install App'.")}
-                  className="flex items-center justify-center gap-3 py-4 bg-indigo-600 text-white border border-indigo-400 rounded-2xl font-black text-[10px] uppercase tracking-widest active:scale-95 transition-all"
-                >
-                  <Smartphone size={16} />
-                  Install PWA
-                </button>
-              </div>
-            </div>
-          </section>
         </div>
 
-        {/* RIGHT COLUMN */}
+        {/* RIGHT COLUMN: AI TEMPLATE */}
         <div className="space-y-8">
-          {/* DRAFTING TEMPLATE SECTION */}
           <section className="bg-white rounded-[2.5rem] border border-slate-200 p-8 shadow-sm">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-2 bg-indigo-50 rounded-xl text-indigo-600">
@@ -172,7 +121,7 @@ const Settings: React.FC<SettingsProps> = ({ template, setTemplate, logo, setLog
             </p>
 
             <textarea 
-              className="w-full h-[500px] p-6 bg-slate-50 border border-slate-100 rounded-[2rem] text-xs font-mono text-slate-700 focus:ring-4 focus:ring-indigo-100 outline-none transition-all leading-relaxed"
+              className="w-full h-[380px] p-6 bg-slate-50 border border-slate-100 rounded-[2rem] text-xs font-mono text-slate-700 focus:ring-4 focus:ring-indigo-100 outline-none transition-all leading-relaxed"
               value={template}
               onChange={(e) => setTemplate(e.target.value)}
             />
@@ -189,6 +138,49 @@ const Settings: React.FC<SettingsProps> = ({ template, setTemplate, logo, setLog
           </section>
         </div>
       </div>
+
+      {/* ENTERPRISE DISTRIBUTION AT THE BOTTOM */}
+      <section className="bg-slate-900 rounded-[3rem] p-10 text-white shadow-2xl relative overflow-hidden ring-8 ring-slate-100">
+        <div className="absolute top-0 right-0 p-8 opacity-5 rotate-12"><Smartphone size={200} /></div>
+        <div className="relative z-10">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
+            <div className="max-w-md">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-indigo-500 rounded-xl text-white">
+                  <MonitorSmartphone size={24} />
+                </div>
+                <div>
+                  <h3 className="text-sm font-black uppercase tracking-widest">Enterprise Distribution Hub</h3>
+                  <p className="text-[10px] text-indigo-300 font-bold uppercase tracking-tighter">Mobile & Desktop Access</p>
+                </div>
+              </div>
+              <p className="text-[13px] leading-relaxed text-slate-300 font-medium italic border-l-2 border-indigo-500/50 pl-6 mb-6">
+                "TenderFlow is optimized for field operations. Deploy the mobile APK to procurement managers or sync via PWA for local terminal access."
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 shrink-0">
+              <button 
+                onClick={handleDownloadAPK}
+                disabled={isDownloading}
+                className="flex items-center justify-center gap-3 px-8 py-5 bg-white text-slate-900 rounded-3xl font-black text-[11px] uppercase tracking-widest active:scale-95 transition-all shadow-xl hover:bg-slate-50 disabled:opacity-50 min-w-[200px]"
+              >
+                {isDownloading ? (
+                  <div className="w-5 h-5 border-2 border-slate-900/10 border-t-slate-900 rounded-full animate-spin"></div>
+                ) : <Download size={18} />}
+                Download APK
+              </button>
+              <button 
+                onClick={() => alert("PWA: Add to Home Screen enabled. Check browser menu for 'Install App'.")}
+                className="flex items-center justify-center gap-3 px-8 py-5 bg-indigo-600 text-white border border-indigo-400 rounded-3xl font-black text-[11px] uppercase tracking-widest active:scale-95 transition-all min-w-[200px]"
+              >
+                <Smartphone size={18} />
+                Install PWA
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
