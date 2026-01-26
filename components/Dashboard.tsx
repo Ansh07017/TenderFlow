@@ -52,7 +52,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onSelectTender, managerProfile })
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState(managerProfile.sector || 'All');
 
-  const categories = ['All', 'Grains & Pulses', 'Dairy', 'Oils & Fats', 'Beverages'];
+  const categories = ['All', 'Grains & Pulses', 'Dairy', 'Oils & Fats', 'Beverages', 'Home Care', 'Spices & Condiments'];
 
   const filteredTenders = MOCK_TENDERS.filter(t => 
     (filterCategory === 'All' || t.category === filterCategory) &&
@@ -61,14 +61,14 @@ const Dashboard: React.FC<DashboardProps> = ({ onSelectTender, managerProfile })
 
   return (
     <div className="pb-32 animate-in fade-in duration-500 max-w-7xl mx-auto">
-      <header className="px-6 md:px-10 pt-10 pb-6 bg-white sticky top-0 z-40 border-b border-slate-100">
-        <div className="flex justify-between items-center mb-8">
+      <header className="px-6 md:px-10 py-8 bg-white border-b border-slate-50">
+        <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-3xl font-black text-slate-900 tracking-tighter uppercase italic">TenderFlow Discovery</h1>
-            <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em] mt-1">Sourcing for {managerProfile.sector} sector</p>
+            <h1 className="text-2xl font-black text-slate-900 tracking-tighter uppercase italic">Discovery Matrix</h1>
+            <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em] mt-1">Market intelligence for {managerProfile.sector}</p>
           </div>
-          <div className="bg-slate-900 p-3 rounded-2xl text-white shadow-xl rotate-3 hidden sm:block">
-             <LayoutGrid size={22} />
+          <div className="bg-slate-900 p-2.5 rounded-xl text-white shadow-xl rotate-3 hidden sm:block opacity-20">
+             <LayoutGrid size={18} />
           </div>
         </div>
         
@@ -88,13 +88,13 @@ const Dashboard: React.FC<DashboardProps> = ({ onSelectTender, managerProfile })
               <button
                 key={cat}
                 onClick={() => setFilterCategory(cat)}
-                className={`px-5 py-3 rounded-2xl text-[10px] font-black whitespace-nowrap transition-all uppercase tracking-widest flex items-center gap-2 border ${
+                className={`px-4 py-2.5 rounded-xl text-[9px] font-black whitespace-nowrap transition-all uppercase tracking-widest flex items-center gap-2 border ${
                   filterCategory === cat 
-                  ? 'bg-indigo-600 text-white border-indigo-700 shadow-xl shadow-indigo-100' 
-                  : 'bg-white text-slate-500 border-slate-200 hover:border-indigo-200 hover:bg-slate-50'
+                  ? 'bg-[#00509d] text-white border-[#00509d] shadow-lg shadow-blue-100' 
+                  : 'bg-white text-slate-500 border-slate-200 hover:border-blue-200 hover:bg-slate-50'
                 }`}
               >
-                {cat === managerProfile.sector && <Star size={12} fill="currentColor" />}
+                {cat === managerProfile.sector && <Star size={10} fill="currentColor" />}
                 {cat}
               </button>
             ))}
@@ -102,13 +102,13 @@ const Dashboard: React.FC<DashboardProps> = ({ onSelectTender, managerProfile })
         </div>
       </header>
 
-      <main className="px-6 md:px-10 mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+      <main className="px-6 md:px-10 mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {filteredTenders.length > 0 ? (
           filteredTenders.map(tender => (
             <div 
               key={tender.id}
               onClick={() => onSelectTender(tender)}
-              className="bg-white rounded-[2.5rem] p-7 border border-slate-100 shadow-sm hover:shadow-2xl hover:border-indigo-100 transition-all cursor-pointer group flex flex-col justify-between"
+              className="bg-white rounded-[2rem] p-6 border border-slate-100 shadow-sm hover:shadow-2xl hover:border-blue-100 transition-all cursor-pointer group flex flex-col justify-between"
             >
               <div>
                 <div className="flex justify-between items-center mb-5">
@@ -122,26 +122,26 @@ const Dashboard: React.FC<DashboardProps> = ({ onSelectTender, managerProfile })
                   <CountdownTimer deadline={tender.deadline} />
                 </div>
 
-                <h3 className="text-xl font-black text-slate-800 leading-[1.1] group-hover:text-indigo-600 transition-colors uppercase tracking-tight mb-2">
+                <h3 className="text-lg font-black text-slate-800 leading-[1.2] group-hover:text-[#00509d] transition-colors uppercase tracking-tight mb-2">
                   {tender.title}
                 </h3>
-                <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest">{tender.authority}</p>
+                <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest truncate">{tender.authority}</p>
 
                 <div className="mt-6 grid grid-cols-2 gap-4">
                   <div className="flex items-center gap-2 text-slate-600">
                     <div className="p-1.5 bg-slate-50 rounded-lg"><MapPin size={12} className="text-slate-400" /></div>
-                    <span className="text-[11px] font-bold truncate">{tender.region}</span>
+                    <span className="text-[10px] font-bold truncate">{tender.region}</span>
                   </div>
                   <div className="flex items-center gap-2 text-slate-600">
                     <div className="p-1.5 bg-slate-50 rounded-lg"><Package size={12} className="text-slate-400" /></div>
-                    <span className="text-[11px] font-bold">{tender.estimatedQuantity}</span>
+                    <span className="text-[10px] font-bold">{tender.estimatedQuantity}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-8 pt-6 border-t border-slate-50 flex items-center justify-between">
-                <span className="text-[9px] text-slate-400 font-black uppercase tracking-widest">ID: {tender.id.split('-')[1] || tender.id}</span>
-                <div className="flex items-center gap-2 text-indigo-600 font-black text-[11px] uppercase tracking-widest bg-indigo-50 px-4 py-2 rounded-xl group-hover:bg-indigo-600 group-hover:text-white transition-all">
+              <div className="mt-8 pt-5 border-t border-slate-50 flex items-center justify-between">
+                <span className="text-[9px] text-slate-300 font-black uppercase tracking-widest">ID: {tender.id.split('-')[1] || tender.id}</span>
+                <div className="flex items-center gap-2 text-[#00509d] font-black text-[10px] uppercase tracking-widest bg-blue-50 px-4 py-2 rounded-xl group-hover:bg-[#00509d] group-hover:text-white transition-all">
                   Analyze <ChevronRight size={14} />
                 </div>
               </div>
@@ -149,11 +149,11 @@ const Dashboard: React.FC<DashboardProps> = ({ onSelectTender, managerProfile })
           ))
         ) : (
           <div className="col-span-full text-center py-24 flex flex-col items-center">
-            <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-6">
-              <Package size={32} className="text-slate-300" />
+            <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-6">
+              <Package size={28} className="text-slate-300" />
             </div>
-            <p className="text-slate-400 text-xs font-black uppercase tracking-[0.3em]">No Tenders Found</p>
-            <button onClick={() => setFilterCategory('All')} className="text-indigo-600 text-[10px] font-black uppercase tracking-widest mt-4 hover:underline underline-offset-4">Reset Filtering Matrix</button>
+            <p className="text-slate-400 text-xs font-black uppercase tracking-[0.3em]">No Tenders Detected</p>
+            <button onClick={() => setFilterCategory('All')} className="text-[#00509d] text-[10px] font-black uppercase tracking-widest mt-4 hover:underline underline-offset-4">Reset Filtering Matrix</button>
           </div>
         )}
       </main>

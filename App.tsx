@@ -9,6 +9,7 @@ import Analytics from './components/Analytics';
 import InventoryManager from './components/InventoryManager';
 import Settings from './components/Settings';
 import Notifications from './components/Notifications';
+import Logo from './components/Logo';
 import { MOCK_INVENTORY, COMPANY_PROFILE as MOCK_COMPANY, MOCK_TENDERS } from './mockData';
 
 const App: React.FC = () => {
@@ -142,7 +143,6 @@ const App: React.FC = () => {
     setSubmissionHistory(prev => prev.map(h => 
       h.tenderId === id ? { ...h, status, rejectionReason: reason, lessonsLearned: lesson } : h
     ));
-    // Trigger an alert for the learning loop
     const newAlert: AppAlert = {
       id: `AL-${Date.now()}`,
       type: 'system',
@@ -223,13 +223,17 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-50 flex justify-center selection:bg-indigo-100">
       <div className="w-full md:max-w-3xl lg:max-w-4xl bg-white min-h-screen shadow-2xl relative overflow-x-hidden border-x border-slate-200">
-        <div className="fixed top-4 right-4 z-[60]">
-          <div className="bg-white/90 backdrop-blur-md border border-slate-200 px-4 py-2 rounded-full flex items-center gap-3 shadow-lg">
-            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
-            <span className="text-[11px] font-black text-slate-800 uppercase tracking-widest hidden sm:inline">TenderFlow AI Active</span>
-            <span className="text-[11px] font-black text-slate-800 sm:hidden">AI LIVE</span>
+        
+        {/* GLOBAL BRAND HEADER */}
+        {currentView !== 'generator' && (
+          <div className="sticky top-0 z-[60] bg-white/90 backdrop-blur-md border-b border-slate-100 px-6 py-4 flex items-center justify-between">
+            <Logo size="sm" />
+            <div className="flex items-center gap-3">
+              <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+              <span className="text-[11px] font-black text-slate-800 uppercase tracking-widest hidden sm:inline">AI Engine Live</span>
+            </div>
           </div>
-        </div>
+        )}
 
         <main className="min-h-screen">
           {renderContent()}
