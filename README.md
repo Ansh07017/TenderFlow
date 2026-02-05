@@ -6,7 +6,7 @@
 
   <div style="margin: 20px 0;">
     <img src="https://img.shields.io/badge/Model-Gemini--3--Pro-blue?style=for-the-badge&logo=google" />
-    <img src="https://img.shields.io/badge/UI-Mobile--First-7cb342?style=for-the-badge" />
+    <img src="https://img.shields.io/badge/UI-Desktop--First-7cb342?style=for-the-badge" />
     <img src="https://img.shields.io/badge/Sector-FMCG%20B2B-orange?style=for-the-badge" />
   </div>
 </div>
